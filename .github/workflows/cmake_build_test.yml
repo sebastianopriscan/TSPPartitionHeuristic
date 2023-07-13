@@ -31,7 +31,7 @@ jobs:
           sudo apt install python3
           sudo apt install
           sudo apt-get install ninja-build
-          sudo snap install cmake
+          sudo apt install cmake
 
       # Runs a set of commands using the runners shell
       - name: Build and Test
