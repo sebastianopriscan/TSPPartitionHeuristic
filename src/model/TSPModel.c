@@ -40,6 +40,29 @@ unsigned char get_nodes_adjacency(struct TSP_instance *instance, unsigned long n
     return instance->adjacencies[instance->nodes * node1 + node2] ;
 }
 
+long get_solution_cost(struct TSP_instance *instance)
+{
+    unsigned long dimension = instance->nodes ;
+    long cost = 0 ;
+
+    unsigned int rowIdx = 0 ;
+
+    COST_LOOP :
+
+    if(rowIdx == dimension) return cost ;
+
+    for (unsigned long colIdx = 0; colIdx < dimension; colIdx++) {
+        if(get_nodes_adjacency(instance, rowIdx, colIdx) == 1)
+        {
+            cost += get_connection_cost(instance, rowIdx, colIdx) ;
+            rowIdx++ ;
+            goto COST_LOOP ;
+        }
+    }
+
+    return cost ;
+}
+
 unsigned char check_instance_is_correct(struct TSP_instance *instance)
 {
     unsigned char colCount[instance->nodes] ;

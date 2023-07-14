@@ -4,5 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "TSPModel.h"
+#include "TSPHeuAlgo.h"
 
 #endif

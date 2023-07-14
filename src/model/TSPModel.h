@@ -23,6 +23,7 @@ struct meta_TSP_instance {
 extern struct TSP_instance *create_instance(unsigned long nodes, long *costs) ;
 extern long get_connection_cost(struct TSP_instance *instance, unsigned long from, unsigned long to) ;
 extern unsigned char get_nodes_adjacency(struct TSP_instance *instance, unsigned long node1, unsigned long node2) ;
+extern long get_solution_cost(struct TSP_instance *instance) ;
 
 extern unsigned char check_instance_is_correct(struct TSP_instance *instance) ;
 extern unsigned char check_instance_connection(struct TSP_instance *instance) ;
