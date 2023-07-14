@@ -11,8 +11,8 @@ long *dummy_partition_distance_gen(struct TSP_instance *instance, struct partiti
         exit(1) ;
     }
 
-    for (int i = 0; i < partitions->partitions; i++) {
-        for (int j = 0 ; j < partitions->partitions ; j++)
+    for (unsigned int i = 0; i < partitions->partitions; i++) {
+        for (unsigned int j = 0 ; j < partitions->partitions ; j++)
         {
             if(i == j)
             {

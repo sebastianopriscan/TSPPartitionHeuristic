@@ -19,7 +19,7 @@ struct TSP_instance *create_instance(unsigned long nodes, long *costs)
         exit(1) ;
     }
 
-    int i = 0 ;
+    unsigned int i = 0 ;
     while (i < nodes * nodes) {
         adjTable[i] = 0 ;
         i++ ;
@@ -44,7 +44,7 @@ unsigned char check_instance_is_correct(struct TSP_instance *instance)
 {
     unsigned char colCount[instance->nodes] ;
 
-    int i = 0 ;
+    unsigned int i = 0 ;
     while (i < instance->nodes)
     {
         colCount[i] = 0 ;
@@ -54,7 +54,7 @@ unsigned char check_instance_is_correct(struct TSP_instance *instance)
     for (i = 0 ; i < instance->nodes ; i++)
     {
         int count = 0 ;
-        for (int j = 0; j < instance->nodes; j++) {
+        for (unsigned int j = 0; j < instance->nodes; j++) {
             if(instance->adjacencies[i * instance->nodes + j] == 1)
             {
                 count++ ;
@@ -73,7 +73,7 @@ unsigned char check_instance_is_correct(struct TSP_instance *instance)
 unsigned char check_instance_connection(struct TSP_instance *instance)
 {
     unsigned char nodeFlags[instance->nodes] ;
-    int i = 1 ;
+    unsigned int i = 1 ;
     nodeFlags[0] = 1 ;
     while (i < instance->nodes)
     {
@@ -86,7 +86,7 @@ unsigned char check_instance_connection(struct TSP_instance *instance)
     i = 0 ;
 
 SEARCH_LOOP :
-    for (int j = 0 ; j < instance->nodes ; j++)
+    for (unsigned int j = 0 ; j < instance->nodes ; j++)
     {
         if(adjTable[i * instance->nodes + j] != 0)
         {
@@ -110,7 +110,7 @@ SEARCH_LOOP :
 static inline struct partitions *getPartitions(struct TSP_instance *instance)
 {
     unsigned char nodeFlags[instance->nodes] ;
-    int i = 1 ;
+    unsigned int i = 1 ;
     nodeFlags[0] = 1 ;
     while (i < instance->nodes)
     {
@@ -143,7 +143,7 @@ static inline struct partitions *getPartitions(struct TSP_instance *instance)
     i = 0 ;
 
 SEARCH_LOOP_2 :
-    for (int j = 0 ; j < instance->nodes ; j++)
+    for (unsigned int j = 0 ; j < instance->nodes ; j++)
     {
         if(adjTable[i * instance->nodes + j] != 0)
         {
