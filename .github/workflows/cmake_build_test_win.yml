@@ -19,7 +19,5 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake ..
-        dir
-        make
-        ctest
+        cmake --build . --config $BUILD_TYPE
+        ctest -C $BUILD_TYPE
