@@ -25,4 +25,16 @@ if (BUILD_TESTING)
 
     add_test(TestTSPModelCostChecks TestTSPModelCostChecks)
 
+    add_executable(TestTSPModelMaxDistFunction testTSPModelMaxDistFunction.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c)
+
+    add_test(TestTSPModelMaxDistFunction TestTSPModelMaxDistFunction)
+
+    add_executable(TestTSPModelMinDistFunction testTSPModelMinDistFunction.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c)
+
+    add_test(TestTSPModelMinDistFunction TestTSPModelMinDistFunction)
+
+    add_executable(TestTSPModelAvgDistFunction testTSPModelAvgDistFunction.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c)
+
+    add_test(TestTSPModelAvgDistFunction TestTSPModelAvgDistFunction)
+
 endif ()

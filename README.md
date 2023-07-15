@@ -25,5 +25,19 @@ The heuristic's basic idea is the following :
         we can iterate this process until the number of nodes makes adding the SEC lighter than the
         original problem, or when the solver naturally finds a connected solution (without being forced to).
 
-The main question of this heuristic is how to assign the distance between the partitions from the nodes
-that compose them, which will be further explored.
+The main questions of this heuristic are how to assign the distance (cost) between the partitions from the nodes
+that compose them and how to reconstruct a solution for an original instance from a solution of a derived one.
+
+For the first question, the following policies are proposed :
+
+- ### Min distance policy :
+        The distance (cost) between two partitions will be the minimum distance (cost) between a node of the  
+        first partition and a node of the second one.
+- ### Max distance policy :
+        The distance (cost) between two partitions will be the maximum distance (cost) between a node of the  
+        first partition and a node of the second one.
+- ### Average distance policy :
+        The distance (cost) between two partitions will be the average of the distances (costs) between the  
+        nodes of the first partition the nodes of the second one.
+
+Policies for the reconstruction will be explored later.
