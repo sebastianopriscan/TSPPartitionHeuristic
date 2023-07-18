@@ -7,5 +7,6 @@
 #include "TSPModel.h"
 #include "TSPHeuAlgo.h"
 #include "distanceGenFunctions.h"
+#include "reconstructionFunctions.h"
 
 #endif
