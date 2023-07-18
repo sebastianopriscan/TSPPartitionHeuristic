@@ -20,6 +20,7 @@ long *dummy_partition_distance_gen(struct TSP_instance *instance, struct partiti
             }
             else
             {
+                /*
                 unsigned firstPartitionIndex, secondPartitionIndex = 0;
                 for (unsigned int k = i * slider ; k < (i+1) *  slider ; k++)
                 {
@@ -39,7 +40,13 @@ long *dummy_partition_distance_gen(struct TSP_instance *instance, struct partiti
                     }
                 }
                 COSTS:
-                new_costs[i * partitions->partitions + j] = get_connection_cost(instance, firstPartitionIndex, secondPartitionIndex) ;
+                */
+                unsigned int firstNode, secondNode ;
+
+                firstNode = partitions->partitionMap[i * slider] ;
+                secondNode = partitions->partitionMap[j*slider] ;
+
+                new_costs[i * partitions->partitions + j] = get_connection_cost(instance, firstNode, secondNode) ;
             }
         }
     }
@@ -78,22 +85,22 @@ int main(void)
 
     if(partitions->partitions != 2) return 1 ;
 
-    if(partitions->partitionMap[0] != 1) return 1 ;
+    if(partitions->partitionMap[0] != 0) return 1 ;
     if(partitions->partitionMap[1] != 1) return 1 ;
-    if(partitions->partitionMap[2] != 0) return 1 ;
-    if(partitions->partitionMap[3] != 0) return 1 ;
-    if(partitions->partitionMap[4] != 0) return 1 ;
-    if(partitions->partitionMap[5] != 0) return 1 ;
-    if(partitions->partitionMap[6] != 1) return 1 ;
-    if(partitions->partitionMap[7] != 1) return 1 ;
-    if(partitions->partitionMap[8] != 0) return 1 ;
-    if(partitions->partitionMap[9] != 0) return 1 ;
-    if(partitions->partitionMap[10] != 0) return 1 ;
-    if(partitions->partitionMap[11] != 0) return 1 ;
-    if(partitions->partitionMap[12] != 0) return 1 ;
-    if(partitions->partitionMap[13] != 0) return 1 ;
-    if(partitions->partitionMap[14] != 0) return 1 ;
-    if(partitions->partitionMap[15] != 0) return 1 ;
+    if(partitions->partitionMap[2] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[3] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[4] != 2) return 1 ;
+    if(partitions->partitionMap[5] != 3) return 1 ;
+    if(partitions->partitionMap[6] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[7] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[8] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[9] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[10] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[11] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[12] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[13] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[14] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[15] != ULONG_MAX) return 1 ;
 
     destroy_meta_instance(metaTspInstance) ;
 
@@ -128,31 +135,31 @@ int main(void)
 
     if(partitions->partitions != 2) return 1 ;
 
-    if(partitions->partitionMap[0] != 1) return 1 ;
+    if(partitions->partitionMap[0] != 0) return 1 ;
     if(partitions->partitionMap[1] != 1) return 1 ;
-    if(partitions->partitionMap[2] != 0) return 1 ;
-    if(partitions->partitionMap[3] != 0) return 1 ;
-    if(partitions->partitionMap[4] != 0) return 1 ;
-    if(partitions->partitionMap[5] != 0) return 1 ;
-    if(partitions->partitionMap[6] != 0) return 1 ;
-    if(partitions->partitionMap[7] != 1) return 1 ;
-    if(partitions->partitionMap[8] != 1) return 1 ;
-    if(partitions->partitionMap[9] != 1) return 1 ;
-    if(partitions->partitionMap[10] != 0) return 1 ;
-    if(partitions->partitionMap[11] != 0) return 1 ;
-    if(partitions->partitionMap[12] != 0) return 1 ;
-    if(partitions->partitionMap[13] != 0) return 1 ;
-    if(partitions->partitionMap[14] != 0) return 1 ;
-    if(partitions->partitionMap[15] != 0) return 1 ;
-    if(partitions->partitionMap[16] != 0) return 1 ;
-    if(partitions->partitionMap[17] != 0) return 1 ;
-    if(partitions->partitionMap[18] != 0) return 1 ;
-    if(partitions->partitionMap[19] != 0) return 1 ;
-    if(partitions->partitionMap[20] != 0) return 1 ;
-    if(partitions->partitionMap[21] != 0) return 1 ;
-    if(partitions->partitionMap[22] != 0) return 1 ;
-    if(partitions->partitionMap[23] != 0) return 1 ;
-    if(partitions->partitionMap[24] != 0) return 1 ;
+    if(partitions->partitionMap[2] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[3] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[4] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[5] != 2) return 1 ;
+    if(partitions->partitionMap[6] != 3) return 1 ;
+    if(partitions->partitionMap[7] != 4) return 1 ;
+    if(partitions->partitionMap[8] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[9] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[10] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[11] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[12] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[13] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[14] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[15] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[16] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[17] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[18] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[19] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[20] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[21] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[22] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[23] != ULONG_MAX) return 1 ;
+    if(partitions->partitionMap[24] != ULONG_MAX) return 1 ;
 
     destroy_meta_instance(metaTspInstance) ;
 

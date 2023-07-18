@@ -143,7 +143,7 @@ static inline struct partitions *getPartitions(struct TSP_instance *instance)
 
     struct partitions *retVal ;
 
-    if((retVal = malloc(sizeof(struct partitions) + sizeof(unsigned char) * instance->nodes * instance->nodes)) == NULL)
+    if((retVal = malloc(sizeof(struct partitions) + sizeof(unsigned long) * instance->nodes * instance->nodes)) == NULL)
     {
         perror("Unable to instantiate a partitions structure: ") ;
         exit(1) ;
@@ -151,19 +151,21 @@ static inline struct partitions *getPartitions(struct TSP_instance *instance)
 
     retVal->nodes = instance->nodes ;
     retVal->partitions = 0 ;
+    retVal->metadata = NULL ;
 
     i = 0 ;
     while (i < retVal->nodes * retVal->nodes)
     {
-        retVal->partitionMap[i] = 0 ;
+        retVal->partitionMap[i] = ULONG_MAX ;
         i++ ;
     }
 
     unsigned char *adjTable = instance->adjacencies ;
 
     retVal->partitions++ ;
-    retVal->partitionMap[0] = 1 ;
+    retVal->partitionMap[0] = 0 ;
     i = 0 ;
+    unsigned int in_partition_index = 1;
 
 SEARCH_LOOP_2 :
     for (unsigned int j = 0 ; j < instance->nodes ; j++)
@@ -171,7 +173,8 @@ SEARCH_LOOP_2 :
         if(adjTable[i * instance->nodes + j] != 0)
         {
             if(nodeFlags[j] == 1) break ;
-            retVal->partitionMap[(retVal->partitions -1) * retVal->nodes + j] = 1 ;
+            retVal->partitionMap[(retVal->partitions -1) * retVal->nodes + in_partition_index] = j ;
+            in_partition_index++ ;
             nodeFlags[j] = 1 ;
             i = j ;
             goto SEARCH_LOOP_2;
@@ -179,12 +182,13 @@ SEARCH_LOOP_2 :
     }
 
     i = 0 ;
+    in_partition_index = 1 ;
     while (i < instance->nodes)
     {
         if(nodeFlags[i] == 0)
         {
             retVal->partitions++ ;
-            retVal->partitionMap[(retVal->partitions -1) * retVal->nodes +i] = 1 ;
+            retVal->partitionMap[(retVal->partitions -1) * retVal->nodes] = i ;
             nodeFlags[i] = 1 ;
             goto SEARCH_LOOP_2 ;
         }
@@ -231,6 +235,7 @@ void destroy_meta_instance(struct meta_TSP_instance *metaTspInstance)
 {
     destroy_instance(metaTspInstance->start) ;
     destroy_instance(metaTspInstance->end) ;
+    free(metaTspInstance->partitions->metadata) ;
     free(metaTspInstance->partitions) ;
     free(metaTspInstance) ;
 }
