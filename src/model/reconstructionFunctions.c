@@ -32,111 +32,109 @@ void min_reconstruction_function(struct meta_TSP_instance *metaTspInstance)
 
     struct partitions *partitions = metaTspInstance->partitions ;
 
-    unsigned short partitionedSequence[partitioned->nodes] ;
-    unsigned short entranceNodes[partitioned->nodes] ;
-    unsigned short exitNodes[partitioned->nodes] ;
+    struct partition_indexes *indexes = partitions->metadata ;
 
-    partitionedSequence[0] = 0 ;
+    unsigned long partPrev = 0, partActual, partActual_original ;
 
-    unsigned int seqIdx = 0 ;
-
-    LOOP_START :
-
-    for (unsigned int i = 0 ; i < partitioned->nodes ; i++)
+    for (unsigned int k = 0 ; k < partitioned->nodes ; k++)
     {
-        if(seqIdx < partitioned->nodes && get_nodes_adjacency(partitioned, partitionedSequence[seqIdx],i) == 1)
+        if(get_nodes_adjacency(partitioned, partPrev, k) == 1)
         {
-            seqIdx++ ;
-            partitionedSequence[seqIdx] = i ;
-            goto LOOP_START ;
+            partActual = k ;
+            partActual_original = k ;
+            break ;
         }
     }
 
-    for (unsigned int i = 1, trials = 0  ; trials < (partitioned->nodes +1) / 2 ; i+= 2, trials++)
-    {
-        unsigned int prev = partitionedSequence[(int)i -1 == -1 ? partitioned->nodes -1 : i-1] ;
-        unsigned int next = partitionedSequence[(i+1) % partitioned->nodes] ;
-        unsigned int actual = partitionedSequence[i % partitioned->nodes] ;
+    do {
 
-        for(unsigned int j = 0 ; j < partitions->nodes ; j++)
+        for (unsigned int k = 0 ; k < partitioned->nodes ; k++)
         {
-            for(unsigned int k = 0 ; k < partitions->nodes ; k++)
+            if(get_nodes_adjacency(partitioned, partActual, k) == 1)
             {
-                if(partitions->partitionMap[prev * partitioned->nodes + j] == 1 && partitions->partitionMap[actual * partitioned->nodes + k] == 1)
+                struct partition_indexes *actualEntrance = indexes + partActual * partitions->partitions + partPrev ;
+                struct partition_indexes *actualExit = indexes + partActual * partitions->partitions + k ;
+                struct partition_indexes *prev = indexes + partPrev * partitions->partitions + partActual ;
+                struct partition_indexes *next = indexes + k * partitions->partitions + partActual ;
+
+                unsigned long prevPartNode = partitions->partitionMap[partPrev * partitions->nodes + prev->exitIndex] ;
+                unsigned long nextPartNode = partitions->partitionMap[k * partitions->nodes + next->entranceIndex] ;
+
+                unsigned long entrance_node_idx = actualEntrance->entranceIndex, end_node_idx = actualExit->exitIndex ;
+
+                unsigned long attached_start, attached_end ;
+
+                attached_start = partitions->partitionMap[partActual * partitions->nodes + end_node_idx +1] != ULONG_MAX
+                        ? partitions->partitionMap[partActual * partitions->nodes + end_node_idx +1] : partitions->partitionMap[partActual * partitions->nodes] ;
+
+                if(entrance_node_idx != 0)
                 {
-                    long cost = get_connection_cost(original, j, k) ;
-                    if(cost == get_connection_cost(partitioned, prev, actual))
+                    attached_end = partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx -1] ;
+                } else
+                {
+                    int j = 0 ;
+                    while (partitions->partitionMap[partActual * partitions->nodes + j] != ULONG_MAX)
                     {
-                        entranceNodes[i % partitioned->nodes] = k ;
-                        exitNodes[(int)i -1 == -1 ? partitioned->nodes -1 : i-1] = j ;
+                        j++ ;
                     }
+
+                    attached_end = partitions->partitionMap[partActual * partitions->nodes + j -1] ;
                 }
 
-                if(partitions->partitionMap[actual * partitioned->nodes + j] == 1 && partitions->partitionMap[next * partitioned->nodes + k] == 1)
+                if(attached_start == partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx])
                 {
-                    long cost = get_connection_cost(original, j, k) ;
-                    if(cost == get_connection_cost(partitioned, actual, next))
-                    {
-                        exitNodes[i % partitioned->nodes] = j ;
-                        entranceNodes[(i+1) % partitioned->nodes] = k ;
-                    }
-                }
-            }
-        }
-    }
+                    unsigned long entranceNode = partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx] ;
+                    unsigned long exitNode = partitions->partitionMap[partActual * partitions->nodes + end_node_idx] ;
+                    original->adjacencies[exitNode * original->nodes + entranceNode] = 0 ;
+                    original->adjacencies[prevPartNode * original->nodes + entranceNode] = 1 ;
+                    original->adjacencies[exitNode * original->nodes + nextPartNode] = 1 ;
 
-    for (unsigned int i = 1 ; i < partitioned->nodes ; i++)
-    {
-        unsigned long partitionSequence[partitions->nodes] ;
-        unsigned long cycle_end, end_node_idx, attach_start, attach_end ;
-        long top_saving = LONG_MAX ;
+                    partPrev = partActual ;
+                    partActual = k ;
 
-        partitionSequence[0] = entranceNodes[i] ;
-        unsigned int idx = 0 ;
-
-        PART_LOOP :
-        for (unsigned int j = 0 ; j < partitions->nodes ; j++)
-        {
-            if(get_nodes_adjacency(original, partitionSequence[idx], j) == 1)
-            {
-                if(j == entranceNodes[i])
-                {
-                    cycle_end = idx ;
                     break;
                 }
 
-                idx++ ;
-                partitionSequence[idx] = j ;
+                unsigned long attach_start, attach_end ;
+                long top_saving = LONG_MAX ;
 
-                if(j == exitNodes[i])
+                unsigned int actual_index = entrance_node_idx ;
+
+                while (actual_index != end_node_idx)
                 {
-                    end_node_idx = idx ;
+                    unsigned long nextNodeIndex = partitions->partitionMap[partActual * partitions->nodes + actual_index +1] != ULONG_MAX
+                                                  ?  actual_index +1 : 0 ;
+
+                    unsigned long nextNode = partitions->partitionMap[partActual * partitions->nodes + nextNodeIndex] ;
+
+                    long saving = get_connection_cost(original, partitions->partitionMap[partActual * partitions->nodes + actual_index], attached_start)
+                                  + get_connection_cost(original,attached_end, nextNode)
+                                  - get_connection_cost(original, partitions->partitionMap[partActual * partitions->nodes + actual_index], nextNode) ;
+                    if(saving < top_saving)
+                    {
+                        attach_start = partitions->partitionMap[partActual * partitions->nodes + actual_index] ;
+                        attach_end = nextNode ;
+                    }
+
+                    actual_index = nextNodeIndex ;
                 }
 
-                goto PART_LOOP ;
+                original->adjacencies[attach_start * original->nodes + attach_end] = 0 ;
+                original->adjacencies[attached_end * original->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]] = 0 ;
+                original->adjacencies[partitions->partitionMap[partActual * partitions->nodes + end_node_idx] * original->nodes + attached_start] = 0 ;
+                original->adjacencies[attach_start * original->nodes + attached_start] = 1 ;
+                original->adjacencies[attached_end * original->nodes + attach_end] = 1 ;
+                original->adjacencies[prevPartNode * original->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]] = 1 ;
+                original->adjacencies[partitions->partitionMap[partActual * partitions->nodes + end_node_idx] * original->nodes + nextPartNode] = 1 ;
+
+                partPrev = partActual ;
+                partActual = k ;
+
+                break;
             }
         }
-
-        for(unsigned int j = 0 ; j < end_node_idx ; j++)
-        {
-            long saving = get_connection_cost(original, partitionSequence[j], partitionSequence[end_node_idx+1])
-                    + get_connection_cost(original,partitionSequence[cycle_end], partitionSequence[j+1])
-                    - get_connection_cost(original, partitionSequence[j], partitionSequence[j+1]) ;
-            if(saving < top_saving)
-            {
-                attach_start = partitionSequence[j] ;
-                attach_end = partitionSequence[j+1] ;
-            }
-        }
-
-        original->adjacencies[attach_start * original->nodes + attach_end] = 0 ;
-        original->adjacencies[partitionSequence[cycle_end] * original->nodes + partitionSequence[0]] = 0 ;
-        original->adjacencies[partitionSequence[end_node_idx] * original->nodes + partitionSequence[end_node_idx +1]] = 0 ;
-        original->adjacencies[attach_start * original->nodes + partitionSequence[end_node_idx +1]] = 1 ;
-        original->adjacencies[partitionSequence[cycle_end] * original->nodes + attach_end] = 1 ;
-        original->adjacencies[exitNodes[i-1] * original->nodes + partitionSequence[0]] = 1 ;
-        original->adjacencies[partitionSequence[end_node_idx] * original->nodes + entranceNodes[(i+1) % partitioned->nodes]] = 1 ;
     }
+    while (partActual != partActual_original) ;
 }
 
 void max_reconstruction_function(struct meta_TSP_instance *metaTspInstance)

@@ -7,7 +7,7 @@ long *min_derivation_function(struct TSP_instance *instance, struct partitions *
 
     struct partition_indexes *indexes ;
 
-    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions)) == NULL)
+    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions * partitions->partitions)) == NULL)
     {
         perror("Error in allocating resources: ") ;
         exit(1) ;
@@ -27,6 +27,8 @@ long *min_derivation_function(struct TSP_instance *instance, struct partitions *
             if(i == j)
             {
                 new_costs[i * partitions->partitions + j] = 0 ;
+                indexes[i * partitions->partitions + j].exitIndex = ULONG_MAX ;
+                indexes[j * partitions->partitions + i].entranceIndex = ULONG_MAX ;
             }
             else
             {
@@ -71,8 +73,8 @@ long *min_derivation_function(struct TSP_instance *instance, struct partitions *
                  */
                 new_costs[i * partitions->partitions + j] = min_cost ;
 
-                indexes[i].exitIndex = bestExitIndex ;
-                indexes[j].entranceIndex = bestEntranceIndex ;
+                indexes[i * partitions->partitions + j].exitIndex = bestExitIndex ;
+                indexes[j * partitions->partitions + i].entranceIndex = bestEntranceIndex ;
             }
         }
     }
@@ -91,7 +93,7 @@ long *max_derivation_function(struct TSP_instance *instance, struct partitions *
 
     struct partition_indexes *indexes ;
 
-    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions)) == NULL)
+    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions * partitions->partitions)) == NULL)
     {
         perror("Error in allocating resources: ") ;
         exit(1) ;
@@ -105,6 +107,8 @@ long *max_derivation_function(struct TSP_instance *instance, struct partitions *
             if(i == j)
             {
                 new_costs[i * partitions->partitions + j] = 0 ;
+                indexes[i * partitions->partitions + j].exitIndex = ULONG_MAX ;
+                indexes[j * partitions->partitions + i].entranceIndex = ULONG_MAX ;
             }
             else
             {
@@ -155,8 +159,8 @@ long *max_derivation_function(struct TSP_instance *instance, struct partitions *
 
                 new_costs[i * partitions->partitions + j] = max_cost ;
 
-                indexes[i].exitIndex = bestExitIndex ;
-                indexes[j].entranceIndex = bestEntranceIndex ;
+                indexes[i * partitions->partitions + j].exitIndex = bestExitIndex ;
+                indexes[j * partitions->partitions + i].entranceIndex = bestEntranceIndex ;
             }
         }
     }
@@ -176,7 +180,7 @@ long *average_derivation_function(struct TSP_instance *instance, struct partitio
 
     struct partition_indexes *indexes ;
 
-    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions)) == NULL)
+    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions * partitions->partitions)) == NULL)
     {
         perror("Error in allocating resources: ") ;
         exit(1) ;
@@ -190,6 +194,8 @@ long *average_derivation_function(struct TSP_instance *instance, struct partitio
             if(i == j)
             {
                 new_costs[i * partitions->partitions + j] = 0 ;
+                indexes[i * partitions->partitions + j].exitIndex = ULONG_MAX ;
+                indexes[j * partitions->partitions + i].entranceIndex = ULONG_MAX ;
             }
             else
             {
@@ -240,8 +246,8 @@ long *average_derivation_function(struct TSP_instance *instance, struct partitio
                 */
                 new_costs[i * partitions->partitions + j] = costs_sum / iterations ;
 
-                indexes[i].exitIndex = bestExitIndex ;
-                indexes[j].entranceIndex = bestEntranceIndex ;
+                indexes[i * partitions->partitions + j].exitIndex = bestExitIndex ;
+                indexes[j * partitions->partitions + i].entranceIndex = bestEntranceIndex ;
             }
         }
     }

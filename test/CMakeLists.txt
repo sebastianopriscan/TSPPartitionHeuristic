@@ -37,4 +37,12 @@ if (BUILD_TESTING)
 
     add_test(TestTSPModelAvgDistFunction TestTSPModelAvgDistFunction)
 
+    add_executable(TestTSPModelMetadata testTSPModelMetadata.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c)
+
+    add_test(TestTSPModelMetadata TestTSPModelMetadata)
+
+    add_executable(TestTSPModelMinReconstruction testTSPModelMinReconstruction.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c ../src/model/reconstructionFunctions.c)
+
+    add_test(TestTSPModelMinReconstruction TestTSPModelMinReconstruction)
+
 endif ()
