@@ -16,7 +16,7 @@ int main(void)
     *(adjacencies + 8 + 3) = 1 ;
     *(adjacencies + 12 + 2) = 1 ;
 
-    struct meta_TSP_instance *metaTspInstance = generate_meta_instance(instance, min_derivation_function) ;
+    struct meta_TSP_instance *metaTspInstance = generate_meta_instance(instance, min_derivation_function_minRec) ;
 
     if(metaTspInstance->end->nodes != 2) return 1 ;
 
@@ -66,7 +66,7 @@ int main(void)
     *(adjacencies + 15 + 4) = 1 ;
     *(adjacencies + 20 + 2) = 1 ;
 
-    metaTspInstance = generate_meta_instance(instance, min_derivation_function) ;
+    metaTspInstance = generate_meta_instance(instance, min_derivation_function_minRec) ;
 
     if(metaTspInstance->end->nodes != 2) return 1 ;
 

@@ -136,27 +136,3 @@ void min_reconstruction_function(struct meta_TSP_instance *metaTspInstance)
     }
     while (partActual != partActual_original) ;
 }
-
-void max_reconstruction_function(struct meta_TSP_instance *metaTspInstance)
-{
-    struct TSP_instance *partitioned = metaTspInstance->end ;
-
-    struct TSP_instance *original = metaTspInstance->start ;
-
-    struct partitions *partitions = metaTspInstance->partitions ;
-
-    for (unsigned int i = 0 ; i < partitioned->nodes * partitioned->nodes ; i++)
-    {
-        if(partitioned->adjacencies[i] == 1)
-        {
-            unsigned int firstIdx, secondIdx ;
-
-            firstIdx = i / partitioned->nodes ;
-            secondIdx = i % partitioned->nodes ;
-
-
-
-            i += partitioned->nodes - secondIdx ;
-        }
-    }
-}

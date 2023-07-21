@@ -17,7 +17,7 @@ int main(void)
                               {4,7,5,-2,1}} ;
 
 
-    void *functions[3] = {min_derivation_function, max_derivation_function, average_derivation_function} ;
+    void *functions[3] = {min_derivation_function_minRec, max_derivation_function_minRec, average_derivation_function_minRec} ;
 
     for (int i = 0; i < 3; i++)
     {
