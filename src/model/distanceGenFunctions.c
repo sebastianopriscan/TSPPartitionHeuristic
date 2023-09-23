@@ -65,6 +65,7 @@ long *min_derivation_function_minRec(struct TSP_instance *instance, struct parti
 
     return new_costs ;
 }
+
 long *max_derivation_function_minRec(struct TSP_instance *instance, struct partitions *partitions)
 {
     unsigned int slider = partitions->nodes ;
@@ -135,6 +136,7 @@ long *max_derivation_function_minRec(struct TSP_instance *instance, struct parti
 
     return new_costs ;
 }
+
 long *average_derivation_function_minRec(struct TSP_instance *instance, struct partitions *partitions)
 {
     unsigned int slider = partitions->nodes ;
@@ -280,7 +282,7 @@ long *min_derivation_function_saving(struct TSP_instance *instance, struct parti
                         secondPartIndex++ ;
                     }
 
-                    indexes[i * partitions->partitions + j * partitions->partitions + firstPartIndex].exitIndex = min_node_idx ;
+                    indexes[i * partitions->partitions * instance->nodes + j * instance->nodes + firstPartIndex].exitIndex = min_node_idx ;
 
                     long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
                                                     partitions->partitionMap[j * partitions->nodes + min_node_idx]) ;
@@ -290,7 +292,7 @@ long *min_derivation_function_saving(struct TSP_instance *instance, struct parti
                     if(cost > distances_scoreboard[arrivalNode])
                     {
                         distances_scoreboard[arrivalNode] = cost ;
-                        indexes[j * partitions->partitions + i * partitions->partitions + min_node_idx].entranceIndex = firstPartIndex ;
+                        indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + min_node_idx].entranceIndex = firstPartIndex ;
                     }
 
                     secondPartIndex = 0 ;
@@ -339,7 +341,7 @@ long *max_derivation_function_saving(struct TSP_instance *instance, struct parti
 
     struct partition_indexes *indexes ;
 
-    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions * partitions->partitions)) == NULL)
+    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions * partitions->partitions * instance->nodes)) == NULL)
     {
         perror("Error in allocating resources: ") ;
         exit(1) ;
@@ -381,7 +383,7 @@ long *max_derivation_function_saving(struct TSP_instance *instance, struct parti
                         secondPartIndex++ ;
                     }
 
-                    indexes[i * partitions->partitions + j * partitions->partitions + firstPartIndex].exitIndex = min_node_idx ;
+                    indexes[i * partitions->partitions * instance->nodes + j * instance->nodes + firstPartIndex].exitIndex = min_node_idx ;
 
                     long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
                                                     partitions->partitionMap[j * partitions->nodes + min_node_idx]) ;
@@ -391,7 +393,7 @@ long *max_derivation_function_saving(struct TSP_instance *instance, struct parti
                     if(cost > distances_scoreboard[arrivalNode])
                     {
                         distances_scoreboard[arrivalNode] = cost ;
-                        indexes[j * partitions->partitions + i * partitions->partitions + min_node_idx].entranceIndex = firstPartIndex ;
+                        indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + min_node_idx].entranceIndex = firstPartIndex ;
                     }
 
                     secondPartIndex = 0 ;
@@ -440,7 +442,7 @@ long *average_derivation_function_saving(struct TSP_instance *instance, struct p
 
     struct partition_indexes *indexes ;
 
-    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions * partitions->partitions)) == NULL)
+    if((indexes = malloc(sizeof(struct partition_indexes) * partitions->partitions * partitions->partitions * instance->nodes)) == NULL)
     {
         perror("Error in allocating resources: ") ;
         exit(1) ;
@@ -485,7 +487,7 @@ long *average_derivation_function_saving(struct TSP_instance *instance, struct p
                         secondPartIndex++ ;
                     }
 
-                    indexes[i * partitions->partitions + j * partitions->partitions + firstPartIndex].exitIndex = min_node_idx ;
+                    indexes[i * partitions->partitions * instance->nodes + j * instance->nodes + firstPartIndex].exitIndex = min_node_idx ;
 
                     long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
                                                     partitions->partitionMap[j * partitions->nodes + min_node_idx]) ;
@@ -495,7 +497,7 @@ long *average_derivation_function_saving(struct TSP_instance *instance, struct p
                     if(cost > distances_scoreboard[arrivalNode])
                     {
                         distances_scoreboard[arrivalNode] = cost ;
-                        indexes[j * partitions->partitions + i * partitions->partitions + min_node_idx].entranceIndex = firstPartIndex ;
+                        indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + min_node_idx].entranceIndex = firstPartIndex ;
                     }
 
                     secondPartIndex = 0 ;
