@@ -28,3 +28,4 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run : |
         ctest
+        cat D:/a/TSPPartitionHeuristic/TSPPartitionHeuristic/build/Testing/Temporary/LastTest.log
