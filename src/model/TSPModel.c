@@ -65,7 +65,13 @@ long get_solution_cost(struct TSP_instance *instance)
 
 unsigned char check_instance_is_correct(struct TSP_instance *instance)
 {
-    unsigned char colCount[instance->nodes] ;
+    unsigned char *colCount ;
+
+    if((colCount = malloc(sizeof (unsigned char) * instance->nodes)) == NULL)
+    {
+        perror("Error in allocating columns; exiting") ;
+        exit(1) ;
+    }
 
     unsigned int i = 0 ;
     while (i < instance->nodes)
@@ -95,7 +101,14 @@ unsigned char check_instance_is_correct(struct TSP_instance *instance)
 
 unsigned char check_instance_connection(struct TSP_instance *instance)
 {
-    unsigned char nodeFlags[instance->nodes] ;
+    unsigned char *nodeFlags ;
+
+    if((nodeFlags = malloc(sizeof (unsigned char) * instance->nodes)) == NULL)
+    {
+        perror("Error in allocating memory for node flags. Exiting ") ;
+        exit(1) ;
+    }
+
     unsigned int i = 1 ;
     nodeFlags[0] = 1 ;
     while (i < instance->nodes)
@@ -132,7 +145,14 @@ SEARCH_LOOP :
 
 static inline struct partitions *getPartitions(struct TSP_instance *instance)
 {
-    unsigned char nodeFlags[instance->nodes] ;
+    unsigned char *nodeFlags ;
+
+    if((nodeFlags = malloc(sizeof (unsigned char) * instance->nodes)) == NULL)
+    {
+        perror("Error in allocating memory for node flags. Exiting ") ;
+        exit(1) ;
+    }
+
     unsigned int i = 1 ;
     nodeFlags[0] = 1 ;
     while (i < instance->nodes)
