@@ -96,6 +96,8 @@ unsigned char check_instance_is_correct(struct TSP_instance *instance)
         if(count != 1) return 1 ;
     }
 
+    free(colCount) ;
+
     return 0 ;
 }
 
@@ -139,6 +141,8 @@ SEARCH_LOOP :
         if (nodeFlags[i] == 0) return 1;
         i++ ;
     }
+
+    free(nodeFlags) ;
 
     return 0 ;
 }
@@ -214,6 +218,8 @@ SEARCH_LOOP_2 :
         }
         i++ ;
     }
+
+    free(nodeFlags) ;
 
     return retVal ;
 }

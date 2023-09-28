@@ -279,21 +279,21 @@ long *min_derivation_function_saving(struct TSP_instance *instance, struct parti
                             min_node_idx = secondPartIndex ;
                         }
 
+                        long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
+                                                        partitions->partitionMap[j * partitions->nodes + secondPartIndex]) ;
+
+                        unsigned long arrivalNode = partitions->partitionMap[j * partitions->nodes + secondPartIndex] ;
+
+                        if(cost > distances_scoreboard[arrivalNode])
+                        {
+                            distances_scoreboard[arrivalNode] = cost ;
+                            indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + secondPartIndex].entranceIndex = firstPartIndex ;
+                        }
+
                         secondPartIndex++ ;
                     }
 
                     indexes[i * partitions->partitions * instance->nodes + j * instance->nodes + firstPartIndex].exitIndex = min_node_idx ;
-
-                    long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
-                                                    partitions->partitionMap[j * partitions->nodes + min_node_idx]) ;
-
-                    unsigned long arrivalNode = partitions->partitionMap[j * partitions->nodes + min_node_idx] ;
-
-                    if(cost > distances_scoreboard[arrivalNode])
-                    {
-                        distances_scoreboard[arrivalNode] = cost ;
-                        indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + min_node_idx].entranceIndex = firstPartIndex ;
-                    }
 
                     secondPartIndex = 0 ;
                     firstPartIndex++ ;
@@ -311,6 +311,8 @@ long *min_derivation_function_saving(struct TSP_instance *instance, struct parti
             }
         }
     }
+
+    free(distances_scoreboard) ;
 
     return new_costs ;
 }
@@ -380,21 +382,21 @@ long *max_derivation_function_saving(struct TSP_instance *instance, struct parti
                             min_node_idx = secondPartIndex ;
                         }
 
+                        long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
+                                                        partitions->partitionMap[j * partitions->nodes + secondPartIndex]) ;
+
+                        unsigned long arrivalNode = partitions->partitionMap[j * partitions->nodes + secondPartIndex] ;
+
+                        if(cost > distances_scoreboard[arrivalNode])
+                        {
+                            distances_scoreboard[arrivalNode] = cost ;
+                            indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + secondPartIndex].entranceIndex = firstPartIndex ;
+                        }
+
                         secondPartIndex++ ;
                     }
 
                     indexes[i * partitions->partitions * instance->nodes + j * instance->nodes + firstPartIndex].exitIndex = min_node_idx ;
-
-                    long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
-                                                    partitions->partitionMap[j * partitions->nodes + min_node_idx]) ;
-
-                    unsigned long arrivalNode = partitions->partitionMap[j * partitions->nodes + min_node_idx] ;
-
-                    if(cost > distances_scoreboard[arrivalNode])
-                    {
-                        distances_scoreboard[arrivalNode] = cost ;
-                        indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + min_node_idx].entranceIndex = firstPartIndex ;
-                    }
 
                     secondPartIndex = 0 ;
                     firstPartIndex++ ;
@@ -412,6 +414,8 @@ long *max_derivation_function_saving(struct TSP_instance *instance, struct parti
             }
         }
     }
+
+    free(distances_scoreboard) ;
 
     return new_costs ;
 }
@@ -484,21 +488,21 @@ long *average_derivation_function_saving(struct TSP_instance *instance, struct p
                             min_node_idx = secondPartIndex ;
                         }
 
+                        long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
+                                                        partitions->partitionMap[j * partitions->nodes + secondPartIndex]) ;
+
+                        unsigned long arrivalNode = partitions->partitionMap[j * partitions->nodes + secondPartIndex] ;
+
+                        if(cost > distances_scoreboard[arrivalNode])
+                        {
+                            distances_scoreboard[arrivalNode] = cost ;
+                            indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + secondPartIndex].entranceIndex = firstPartIndex ;
+                        }
+
                         secondPartIndex++ ;
                     }
 
                     indexes[i * partitions->partitions * instance->nodes + j * instance->nodes + firstPartIndex].exitIndex = min_node_idx ;
-
-                    long cost = get_connection_cost(instance, partitions->partitionMap[i * partitions->nodes + firstPartIndex],
-                                                    partitions->partitionMap[j * partitions->nodes + min_node_idx]) ;
-
-                    unsigned long arrivalNode = partitions->partitionMap[j * partitions->nodes + min_node_idx] ;
-
-                    if(cost > distances_scoreboard[arrivalNode])
-                    {
-                        distances_scoreboard[arrivalNode] = cost ;
-                        indexes[j * partitions->partitions * instance->nodes + i * instance->nodes + min_node_idx].entranceIndex = firstPartIndex ;
-                    }
 
                     secondPartIndex = 0 ;
                     firstPartIndex++ ;
@@ -516,6 +520,8 @@ long *average_derivation_function_saving(struct TSP_instance *instance, struct p
             }
         }
     }
+
+    free(distances_scoreboard) ;
 
     return new_costs ;
 }
