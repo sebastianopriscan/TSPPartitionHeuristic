@@ -41,3 +41,9 @@ For the first question, the following policies are proposed :
         nodes of the first partition the nodes of the second one.
 
 Policies for the reconstruction will be explored later.
+
+## Credits
+
+The MIP solver used for testing this program is HiGHS, see :
+
+- Parallelizing the dual revised simplex method Q. Huangfu and J. A. J. Hall Mathematical Programming Computation, 10 (1), 119-142, 2018. DOI: 10.1007/s12532-017-0130-5
