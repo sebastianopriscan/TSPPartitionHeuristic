@@ -144,17 +144,8 @@ void highs_solver(struct TSP_instance *instance, unsigned char relaxed)
 
                 if(relaxed == RELAXED)
                 {
-                    for (int q = 1, ctr = 0 ; q <= (int) pow(2, (double) instance->nodes) ; q <<= 1, ctr++)
-                    {
-                        int i_mask = (1 << i) ;
-                        int j_mask = (1 << j) ;
-
-                        if(!(q & i_mask) && (q & j_mask))
-                        {
-                            a_index[in_col_idx_counter] = ctr ;
-                            in_col_idx_counter ++ ;
-                        }
-                    }
+                    a_index[in_col_idx_counter++] = (int) i ;
+                    a_index[in_col_idx_counter++] = (int) (instance->nodes + j) ;
                 }
                 else
                 {
