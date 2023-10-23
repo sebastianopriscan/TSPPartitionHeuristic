@@ -85,3 +85,10 @@ Moving to the second question, the following two policies are proposed :
         "The selected arc will be the one for which the the "saving" obtained by removing it and connecting its
         nodes to the lowest cost node in the next partition and to the higher cost node in the previous
         is the most profitable"
+
+
+## Credits
+
+The MIP solver used for testing this program is HiGHS, see :
+
+- Parallelizing the dual revised simplex method Q. Huangfu and J. A. J. Hall Mathematical Programming Computation, 10 (1), 119-142, 2018. DOI: 10.1007/s12532-017-0130-5
