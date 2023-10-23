@@ -2,14 +2,14 @@ name: cmake_testing_win
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "more_data_on_meta_instance_creation" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "more_data_on_meta_instance_creation" ]
 
 jobs:
   build:
 
-    runs-on: windows-latest, macos-latest
+    runs-on: windows-latest
 
     steps:
     

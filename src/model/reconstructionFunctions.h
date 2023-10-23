@@ -6,4 +6,3 @@
 
 extern void saving_reconstruction_function(struct meta_TSP_instance *) ;
 extern void min_reconstruction_function(struct meta_TSP_instance *) ;
-extern void max_reconstruction_function(struct meta_TSP_instance *) ;

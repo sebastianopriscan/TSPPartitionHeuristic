@@ -8,10 +8,16 @@ struct TSP_instance {
     unsigned char *adjacencies ;
 };
 
+struct partition_indexes {
+    unsigned long entranceIndex ;
+    unsigned long exitIndex ;
+};
+
 struct partitions {
     unsigned long nodes ;
     unsigned long partitions ;
-    unsigned char partitionMap[] ;
+    void * metadata ;
+    unsigned long partitionMap[] ;
 };
 
 struct meta_TSP_instance {

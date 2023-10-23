@@ -37,4 +37,28 @@ if (BUILD_TESTING)
 
     add_test(TestTSPModelAvgDistFunction TestTSPModelAvgDistFunction)
 
+    add_executable(TestTSPModelMetadata testTSPModelMetadata.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c)
+
+    add_test(TestTSPModelMetadata TestTSPModelMetadata)
+
+    add_executable(TestTSPModelMinReconstruction testTSPModelMinReconstruction.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c ../src/model/reconstructionFunctions.c)
+
+    add_test(TestTSPModelMinReconstruction TestTSPModelMinReconstruction)
+
+    add_executable(TestTSPModelMinDistFunctionSaving testTSPModelMinDistFunctionSaving.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c)
+
+    add_test(TestTSPModelMinDistFunctionSaving TestTSPModelMinDistFunctionSaving)
+
+    add_executable(TestTSPModelMaxDistFunctionSaving testTSPModelMaxDistFunctionSaving.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c)
+
+    add_test(TestTSPModelMaxDistFunctionSaving TestTSPModelMaxDistFunctionSaving)
+
+    add_executable(TestTSPModelAvgDistFunctionSaving testTSPModelAvgDistFunctionSaving.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c)
+
+    add_test(TestTSPModelAvgDistFunctionSaving TestTSPModelAvgDistFunctionSaving)
+
+    add_executable(TestTSPModelSavingReconstruction testTSPModelSavingReconstruction.c ../src/model/TSPModel.c ../src/model/distanceGenFunctions.c ../src/model/reconstructionFunctions.c)
+
+    add_test(TestTSPModelSavingReconstruction TestTSPModelSavingReconstruction)
+
 endif ()
