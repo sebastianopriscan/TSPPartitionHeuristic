@@ -4,6 +4,10 @@
 
 #include "model.h"
 
-extern long *min_derivation_function(struct TSP_instance *, struct partitions *) ;
-extern long *max_derivation_function(struct TSP_instance *, struct partitions *) ;
-extern long *average_derivation_function(struct TSP_instance *, struct partitions *) ;
+extern long *min_derivation_function_minRec(struct TSP_instance *instance, struct partitions *partitions) ;
+extern long *max_derivation_function_minRec(struct TSP_instance *instance, struct partitions *partitions) ;
+extern long *average_derivation_function_minRec(struct TSP_instance *instance, struct partitions *partitions) ;
+
+extern long *min_derivation_function_saving(struct TSP_instance *instance, struct partitions *partitions) ;
+extern long *max_derivation_function_saving(struct TSP_instance *instance, struct partitions *partitions) ;
+extern long *average_derivation_function_saving(struct TSP_instance *instance, struct partitions *partitions) ;

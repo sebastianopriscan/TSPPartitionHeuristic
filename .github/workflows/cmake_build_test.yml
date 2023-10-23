@@ -6,9 +6,9 @@ name: cmake_testing
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master" ]
+    branches: [ "master", "more_data_on_meta_instance_creation" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "more_data_on_meta_instance_creation" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
