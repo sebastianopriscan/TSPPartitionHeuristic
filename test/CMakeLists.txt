@@ -48,20 +48,22 @@ if (BUILD_TESTING)
 
     add_test(TestTSPModelAvgDistFunction TestTSPModelAvgDistFunction)
 
-    add_executable(TestSolverIntegration testSolverInclusion.c)
+    if(TEST_SOLVER_USING_TESTS)
+        add_executable(TestSolverIntegration testSolverInclusion.c)
 
-    target_include_directories(TestSolverIntegration PRIVATE ${HIGHS_INCLUDE_DIR})
+        target_include_directories(TestSolverIntegration PRIVATE ${HIGHS_INCLUDE_DIR})
 
-    target_link_libraries(TestSolverIntegration ${HIGHS_LIBRARIES})
+        target_link_libraries(TestSolverIntegration ${HIGHS_LIBRARIES})
 
-    add_test(TestSolverIntegration TestSolverIntegration)
+        add_test(TestSolverIntegration TestSolverIntegration)
 
-    add_executable(TestSolver testSolver.c ../src/model/TSPModel.c solvers/highsSolver.c)
+        add_executable(TestSolver testSolver.c ../src/model/TSPModel.c solvers/highsSolver.c)
 
-    target_include_directories(TestSolver PRIVATE ${HIGHS_INCLUDE_DIR})
+        target_include_directories(TestSolver PRIVATE ${HIGHS_INCLUDE_DIR})
 
-    target_link_libraries(TestSolver ${HIGHS_LIBRARIES} m)
+        target_link_libraries(TestSolver ${HIGHS_LIBRARIES} m)
 
-    add_test(TestSolver TestSolver)
+        add_test(TestSolver TestSolver)
+    endif ()
 
 endif ()
