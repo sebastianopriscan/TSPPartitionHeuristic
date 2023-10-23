@@ -5,17 +5,6 @@ set(CMAKE_C_STANDARD 11)
 
 if (BUILD_TESTING)
 
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
-    find_package(HIGHS REQUIRED)
-
-    include_directories(${HIGHS_INCLUDE_DIR})
-
-    if(${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
-        set(HIGHS_INCLUDE_BUILD ${HIGHS_INCLUDE_DIR}/../build)
-        include_directories(${HIGHS_INCLUDE_BUILD})
-    endif (${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
-
-
     add_executable(TestTSPModelCreate testTSPModelCreate.c ../src/model/TSPModel.c)
 
     add_test(TestTSPModelCreate TestTSPModelCreate)
@@ -49,6 +38,17 @@ if (BUILD_TESTING)
     add_test(TestTSPModelAvgDistFunction TestTSPModelAvgDistFunction)
 
     if(TEST_SOLVER_USING_TESTS)
+
+        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+        find_package(HIGHS REQUIRED)
+
+        include_directories(${HIGHS_INCLUDE_DIR})
+
+        if(${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
+            set(HIGHS_INCLUDE_BUILD ${HIGHS_INCLUDE_DIR}/../build)
+            include_directories(${HIGHS_INCLUDE_BUILD})
+        endif (${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
+
         add_executable(TestSolverIntegration testSolverInclusion.c)
 
         target_include_directories(TestSolverIntegration PRIVATE ${HIGHS_INCLUDE_DIR})
