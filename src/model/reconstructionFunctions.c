@@ -136,6 +136,7 @@ void min_reconstruction_function(struct meta_TSP_instance *metaTspInstance)
         {
             if(get_nodes_adjacency(partitioned, partActual, k) == 1)
             {
+                //The commented out lines in this scope are thought to be redundant, they will be kept until sure
                 struct partition_indexes *actualEntrance = indexes + partActual * partitions->partitions + partPrev ;
                 struct partition_indexes *actualExit = indexes + partActual * partitions->partitions + k ;
                 struct partition_indexes *prev = indexes + partPrev * partitions->partitions + partActual ;
@@ -145,6 +146,59 @@ void min_reconstruction_function(struct meta_TSP_instance *metaTspInstance)
                 unsigned long nextPartNode = partitions->partitionMap[k * partitions->nodes + next->entranceIndex] ;
 
                 unsigned long entrance_node_idx = actualEntrance->entranceIndex, end_node_idx = actualExit->exitIndex ;
+
+                if(entrance_node_idx == end_node_idx)
+                {
+                    unsigned int entrance_champion_idx , exit_champion_idx ;
+                    long entrance_champion_cost = LONG_MAX, exit_champion_cost = LONG_MAX ;
+                    unsigned int partIndex = 0;
+
+                    while(partitions->partitionMap[partActual * partitions->nodes + partIndex] != ULONG_MAX)
+                    {
+                        if(partIndex != entrance_node_idx)
+                        {
+                            long candidate_entrance_cost, candidate_exit_cost ;
+
+                            candidate_entrance_cost = get_connection_cost(original, prevPartNode,
+                                  partitions->partitionMap[partActual * partitions->nodes + partIndex]) ;
+                            candidate_exit_cost = get_connection_cost(original, partitions->partitionMap[partActual * partitions->nodes + partIndex],
+                                              nextPartNode) ;
+
+                            if(candidate_entrance_cost < entrance_champion_cost)
+                            {
+                                entrance_champion_cost = candidate_entrance_cost ;
+                                entrance_champion_idx = partIndex ;
+                            }
+
+                            if(candidate_exit_cost < exit_champion_cost)
+                            {
+                                exit_champion_cost = candidate_exit_cost ;
+                                exit_champion_idx = partIndex ;
+                            }
+                        }
+                        partIndex++ ;
+                    }
+
+                    long past_entrance_cost = get_connection_cost(original, prevPartNode, partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]) ;
+                    long past_exit_cost = get_connection_cost(original, partitions->partitionMap[partActual * partitions->nodes + end_node_idx], nextPartNode) ;
+
+                    if(entrance_champion_cost + past_exit_cost < exit_champion_cost + past_entrance_cost)
+                    {
+                        if(partPrev != 0)
+                        {
+                            original->adjacencies[prevPartNode * partitions->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]] = 0 ;
+                        }
+                        else
+                            indexes[partActual * partitions->partitions + partPrev].entranceIndex = entrance_champion_idx ;
+                        entrance_node_idx = entrance_champion_idx ;
+                        original->adjacencies[prevPartNode * partitions->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]] = 1 ;
+                    }
+                    else
+                    {
+                        indexes[partActual * partitions->partitions + k].exitIndex = exit_champion_idx ;
+                        end_node_idx = exit_champion_idx ;
+                    }
+                }
 
                 unsigned long attached_start, attached_end ;
 
@@ -170,7 +224,7 @@ void min_reconstruction_function(struct meta_TSP_instance *metaTspInstance)
                     unsigned long entranceNode = partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx] ;
                     unsigned long exitNode = partitions->partitionMap[partActual * partitions->nodes + end_node_idx] ;
                     original->adjacencies[exitNode * original->nodes + entranceNode] = 0 ;
-                    original->adjacencies[prevPartNode * original->nodes + entranceNode] = 1 ;
+                    //original->adjacencies[prevPartNode * original->nodes + entranceNode] = 1 ;
                     original->adjacencies[exitNode * original->nodes + nextPartNode] = 1 ;
 
                     partPrev = partActual ;
@@ -208,7 +262,7 @@ void min_reconstruction_function(struct meta_TSP_instance *metaTspInstance)
                 original->adjacencies[partitions->partitionMap[partActual * partitions->nodes + end_node_idx] * original->nodes + attached_start] = 0 ;
                 original->adjacencies[attach_start * original->nodes + attached_start] = 1 ;
                 original->adjacencies[attached_end * original->nodes + attach_end] = 1 ;
-                original->adjacencies[prevPartNode * original->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]] = 1 ;
+                //original->adjacencies[prevPartNode * original->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]] = 1 ;
                 original->adjacencies[partitions->partitionMap[partActual * partitions->nodes + end_node_idx] * original->nodes + nextPartNode] = 1 ;
 
                 partPrev = partActual ;

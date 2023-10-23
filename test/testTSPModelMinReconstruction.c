@@ -61,5 +61,36 @@ int main(void)
 
     destroy_meta_instance(metaTspInstance) ;
 
+    long costsMat2[5][5] = {{0, 10, 20, 30, 40},
+                            {30, 0, 60, 20, 34},
+                            {1, 20, 0, 50, 66},
+                            {10,1,1,0, -4},
+                            {4,7,5,-2,1}} ;
+
+    instance = create_instance(5, (long *)costsMat2) ;
+
+    adjacencies = instance->adjacencies ;
+
+    *(adjacencies + 1) = 1 ;
+    *(adjacencies + 5) = 1 ;
+    *(adjacencies + 10 + 3) = 1 ;
+    *(adjacencies + 15 + 4) = 1 ;
+    *(adjacencies + 20 + 2) = 1 ;
+
+    metaTspInstance = generate_meta_instance(instance, min_derivation_function_minRec) ;
+
+    metaTspInstance->end->adjacencies[0] = 0 ;
+    metaTspInstance->end->adjacencies[1] = 1 ;
+    metaTspInstance->end->adjacencies[2] = 1 ;
+    metaTspInstance->end->adjacencies[3] = 0 ;
+
+    min_reconstruction_function(metaTspInstance) ;
+
+    if(check_instance_is_correct(instance) != 0) return 1 ;
+    if(check_instance_connection(instance) != 0) return 1 ;
+
+
+    destroy_meta_instance(metaTspInstance) ;
+
     return 0 ;
 }
