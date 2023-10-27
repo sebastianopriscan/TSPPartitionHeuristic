@@ -10,7 +10,7 @@ else(WIN32)
         find_path(HIGHS_INCLUDE_DIR Highs.h
                 PATHS
                 ${HIGHS_SOURCE_DIR}/HiGHS/src
-                ${HIGHS_INSTALL_DIR}*/include/highs
+                ${HIGHS_INSTALL_DIR}/include/highs
                 /usr/local/include/highs
         )
 
