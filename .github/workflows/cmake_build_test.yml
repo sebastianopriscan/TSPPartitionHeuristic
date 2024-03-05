@@ -38,7 +38,7 @@ jobs:
           cache-name : cache-HIGHS-installation
         with :
           key : ${{ runner.os }}-${{ env.cache-name }}
-          path : ~/HIGHS
+          path : ~/HiGHS
 
       - if : ${{ steps.cache-HIGHS.outputs.cache-hit != 'true' }}
         name : Prepare solver
