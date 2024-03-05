@@ -63,31 +63,40 @@ if (BUILD_TESTING)
 
     if(TEST_SOLVER_USING_TESTS)
 
-          list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
-          find_package(HIGHS REQUIRED)
+        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+        find_package(HIGHS REQUIRED)
 
-          include_directories(${HIGHS_INCLUDE_DIR})
+        include_directories(${HIGHS_INCLUDE_DIR})
 
-          if(${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
-              set(HIGHS_INCLUDE_BUILD ${HIGHS_INCLUDE_DIR}/../build)
-              include_directories(${HIGHS_INCLUDE_BUILD})
-          endif (${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
+        if(${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
+            set(HIGHS_INCLUDE_BUILD ${HIGHS_INCLUDE_DIR}/../build)
+            include_directories(${HIGHS_INCLUDE_BUILD})
+        endif (${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
 
-          add_executable(TestSolverIntegration testSolverInclusion.c)
+        add_executable(TestSolverIntegration testSolverInclusion.c)
 
-          target_include_directories(TestSolverIntegration PRIVATE ${HIGHS_INCLUDE_DIR})
+        target_include_directories(TestSolverIntegration PRIVATE ${HIGHS_INCLUDE_DIR})
 
-          target_link_libraries(TestSolverIntegration ${HIGHS_LIBRARIES})
+        target_link_libraries(TestSolverIntegration ${HIGHS_LIBRARIES})
 
-          add_test(TestSolverIntegration TestSolverIntegration)
+        add_test(TestSolverIntegration TestSolverIntegration)
 
-          add_executable(TestSolver testSolver.c ../src/model/TSPModel.c solvers/highsSolver.c)
+        add_executable(TestSolver testSolver.c ../src/model/TSPModel.c solvers/highsSolver.c)
 
-          target_include_directories(TestSolver PRIVATE ${HIGHS_INCLUDE_DIR})
+        target_include_directories(TestSolver PRIVATE ${HIGHS_INCLUDE_DIR})
 
-          target_link_libraries(TestSolver ${HIGHS_LIBRARIES} m)
+        target_link_libraries(TestSolver ${HIGHS_LIBRARIES} m)
 
-          add_test(TestSolver TestSolver)
+        add_test(TestSolver TestSolver)
+
+        add_executable(TestWholeAlgorithm testWholeAlgorithm.c solvers/highsSolver.c)
+
+        target_include_directories(TestWholeAlgorithm PRIVATE ${HIGHS_INCLUDE_DIR})
+
+        target_link_libraries(TestWholeAlgorithm TSPPartitionHeuristic ${HIGHS_LIBRARIES} m)
+
+        add_test(TestWholeAlgorithm TestWholeAlgorithm)
+
     endif ()
 
 endif ()
