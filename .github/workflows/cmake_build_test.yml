@@ -31,7 +31,18 @@ jobs:
           sudo apt install python3
           sudo apt install cmake
 
-      - name : Prepare solver
+      - name : Restore solver cache
+        id : cache-HIGHS
+        uses : actions/cache@v3
+        env :
+          cache-name : cache-HIGHS-installation
+        with :
+          key : ${{ runner.os }}-${{ env.cache-name }}
+          path : ~/HIGHS
+
+      - if : ${{ steps.cache-HIGHS.outputs.cache-hit != 'true' }}
+        name : Prepare solver
+        continue-on-error : true
         run : |
           cd ~
           git clone https://github.com/ERGO-Code/HiGHS.git
