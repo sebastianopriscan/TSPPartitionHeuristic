@@ -68,10 +68,13 @@ if (BUILD_TESTING)
 
         include_directories(${HIGHS_INCLUDE_DIR})
 
-        if(${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
-            set(HIGHS_INCLUDE_BUILD ${HIGHS_INCLUDE_DIR}/../build)
-            include_directories(${HIGHS_INCLUDE_BUILD})
-        endif (${HIGHS_INCLUDE_DIR} STREQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
+          if(${HIGHS_INCLUDE_DIR} PATH_EQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
+              find_path(HIGHS_INCLUDE_BUILD HConfig.h
+                PATHS
+                ${HIGHS_SOURCE_DIR}/HiGHS/build
+              )
+              include_directories(${HIGHS_INCLUDE_BUILD})
+          endif (${HIGHS_INCLUDE_DIR} PATH_EQUAL ${HIGHS_SOURCE_DIR}/HiGHS/src)
 
         add_executable(TestSolverIntegration testSolverInclusion.c)
 
@@ -85,17 +88,21 @@ if (BUILD_TESTING)
 
         target_include_directories(TestSolver PRIVATE ${HIGHS_INCLUDE_DIR})
 
-        target_link_libraries(TestSolver ${HIGHS_LIBRARIES} m)
-
         add_test(TestSolver TestSolver)
 
         add_executable(TestWholeAlgorithm testWholeAlgorithm.c solvers/highsSolver.c)
 
         target_include_directories(TestWholeAlgorithm PRIVATE ${HIGHS_INCLUDE_DIR})
 
-        target_link_libraries(TestWholeAlgorithm TSPPartitionHeuristic ${HIGHS_LIBRARIES} m)
-
         add_test(TestWholeAlgorithm TestWholeAlgorithm)
+
+        if(WIN32)
+            target_link_libraries(TestSolver ${HIGHS_LIBRARIES})
+            target_link_libraries(TestWholeAlgorithm TSPPartitionHeuristic ${HIGHS_LIBRARIES})
+        else(WIN32)
+            target_link_libraries(TestSolver ${HIGHS_LIBRARIES} m)
+            target_link_libraries(TestWholeAlgorithm TSPPartitionHeuristic ${HIGHS_LIBRARIES} m)
+        endif(WIN32)  
 
     endif ()
 
