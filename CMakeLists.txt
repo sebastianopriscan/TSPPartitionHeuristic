@@ -5,7 +5,11 @@ include(CTest)
 
 set(CMAKE_C_STANDARD 11)
 
-add_compile_options(-Wall -Wextra)
+if(WIN32)
+    add_compile_options(-Wall)
+else(WIN32)
+    add_compile_options(-Wall -Wextra)
+endif(WIN32)
 
 add_subdirectory(test)
 
