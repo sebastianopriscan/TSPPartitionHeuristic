@@ -1,13 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef LINUX
 #include <dirent.h>
+#endif
+#ifdef WIN32
+#include "Windows.h"
+#endif
 
 #include "../src/model/model.h"
 #include "solvers/highsSolver.h"
 
+#ifdef LINUX
 DIR *directory ;
 struct dirent *directory_struct ;
+#endif
+#ifdef WIN32
+WIN32_FIND_DATA fdFile ;
+HANDLE hFind = NULL ;
+#endif
+
 FILE *file ;
 
 char nameBuffer[4096] ;
@@ -34,6 +46,7 @@ int failure = 0;
 
 int main(void)
 {
+#ifdef LINUX
     position = stpcpy(nameBuffer, "../../test/resources/") ;
     if((directory = opendir("../../test/resources")) == NULL)
     {
@@ -47,6 +60,26 @@ int main(void)
             continue;
 
         strcpy(position, directory_struct->d_name) ;
+#endif
+#ifdef WIN32
+    strcpy(nameBuffer, "..\\..\\..\\..\\test\\resources\\") ;
+    position = nameBuffer + strlen(nameBuffer) ;
+
+    if((hFind = FindFirstFile("..\\..\\..\\..\\test\\resources\\*.*", &fdFile)) == INVALID_HANDLE_VALUE)
+    {
+        perror("Error in opening resources dir, Exiting...") ;
+        exit(1) ;
+    }
+
+    do
+    {
+        if(strcmp(fdFile.cFileName, ".") == 0|| strcmp(fdFile.cFileName, "..") == 0)
+            continue;
+
+        strcpy(position, fdFile.cFileName) ;
+    
+#endif
+    
         if((file = fopen(nameBuffer, "r")) == NULL)
         {
 
@@ -134,7 +167,12 @@ int main(void)
 
             free(costMatrix) ;
         }
+#ifdef LINUX
     }
+#endif
+#ifdef WIN32
+    } while(FindNextFile(hFind, &fdFile)) ;
+#endif
 
     return failure ;
 }
