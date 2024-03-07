@@ -46,7 +46,13 @@ jobs:
         cmake.exe --build build
         
     - name : Test
-      shell : bash
       working-directory: ${{github.workspace}}/main/build
       run : |
-        ctest
+        ctest.exe
+
+    - name : Save test output
+      if : ${{ always() }}
+      uses : actions/upload-artifact@v4
+      with :
+        name : tests-output
+        path : 'D:/a/TSPPartitionHeuristic/TSPPartitionHeuristic/main/build/Testing/Temporary/LastTest.log'
