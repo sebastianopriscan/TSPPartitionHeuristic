@@ -48,6 +48,5 @@ jobs:
     - name : Test
       shell : bash
       working-directory: ${{github.workspace}}/main/build
-      continue-on-error : true
       run : |
         ctest

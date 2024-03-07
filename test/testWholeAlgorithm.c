@@ -62,10 +62,10 @@ int main(void)
         strcpy(position, directory_struct->d_name) ;
 #endif
 #ifdef WIN32
-    strcpy(nameBuffer, "..\\..\\..\\..\\test\\resources\\") ;
+    strcpy(nameBuffer, "..\\..\\..\\test\\resources\\") ;
     position = nameBuffer + strlen(nameBuffer) ;
 
-    if((hFind = FindFirstFile("..\\..\\..\\..\\test\\resources\\*.*", &fdFile)) == INVALID_HANDLE_VALUE)
+    if((hFind = FindFirstFile("..\\..\\..\\test\\resources\\*.*", &fdFile)) == INVALID_HANDLE_VALUE)
     {
         perror("Error in opening resources dir, Exiting...") ;
         exit(1) ;

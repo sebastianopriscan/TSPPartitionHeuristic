@@ -53,10 +53,15 @@ jobs:
           cmake --build .
           sudo cmake --install .
           
+      - if : ${{ steps.cache-HIGHS.outputs.cache-hit == 'true' }}
+        name : Install solver only
+        continue-on-error : true
+        run : |
+          cd ~/HiGHS/build
+          sudo cmake --install .
 
       # Runs a set of commands using the runners shell
       - name: Build and Test
-        continue-on-error : true
         run: |
           mkdir build
           cd build
