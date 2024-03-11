@@ -20,6 +20,8 @@ void TSP_heuristic_algorithm(struct TSP_instance *instance, long *distance_deriv
 
         reconstruction_function(metaTspInstance) ;
 
+        destroy_meta_instance(metaTspInstance) ;
+
         return ;
     }
 }

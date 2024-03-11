@@ -40,7 +40,7 @@ void (*(reconstruction_functions[2]))(struct meta_TSP_instance *) = {min_reconst
 
 
 
-char lineBuffer[4096] ;
+char lineBuffer[1048576] ;
 
 int failure = 0;
 
@@ -90,7 +90,7 @@ int main(void)
 
         int numberOfInstances, instanceSize ;
 
-        fgets(lineBuffer, 4096, file) ;
+        fgets(lineBuffer, 1048576, file) ;
 
         char *token = strtok(lineBuffer, " ") ;
 
@@ -129,7 +129,7 @@ int main(void)
                 exit(1) ;
             }
 
-            fgets(lineBuffer, 4096, file) ;
+            fgets(lineBuffer, 1048576, file) ;
 
             for (int j = 0; j < instanceSize ; j++)
             {
@@ -147,7 +147,7 @@ int main(void)
                     token = strtok(NULL, " ") ;
                 }
 
-                fgets(lineBuffer, 4096, file) ;
+                fgets(lineBuffer, 1048576, file) ;
             }
 
             for (int j = 0 ; j < reconstruction_functions_types ; j++)
