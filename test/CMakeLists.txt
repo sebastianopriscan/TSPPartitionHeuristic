@@ -96,13 +96,21 @@ if (BUILD_TESTING)
 
         add_test(TestWholeAlgorithm TestWholeAlgorithm)
 
+        add_executable(TestAlgorithmMinDerivAllReconstructions testAlgorithmMinDerivAllReconstructions.c solvers/highsSolver.c)
+
+        target_include_directories(TestAlgorithmMinDerivAllReconstructions PRIVATE ${HIGHS_INCLUDE_DIR})
+
+        add_test(TestAlgorithmMinDerivAllReconstructions TestAlgorithmMinDerivAllReconstructions)
+
         if(WIN32)
             target_link_libraries(TestSolver ${HIGHS_LIBRARIES})
             target_link_libraries(TestWholeAlgorithm TSPPartitionHeuristic ${HIGHS_LIBRARIES})
+            target_link_libraries(TestAlgorithmMinDerivAllReconstructions TSPPartitionHeuristic ${HIGHS_LIBRARIES})
             target_compile_definitions(TestWholeAlgorithm PUBLIC WIN32)
         else(WIN32)
             target_link_libraries(TestSolver ${HIGHS_LIBRARIES} m)
             target_link_libraries(TestWholeAlgorithm TSPPartitionHeuristic ${HIGHS_LIBRARIES} m)
+            target_link_libraries(TestAlgorithmMinDerivAllReconstructions TSPPartitionHeuristic ${HIGHS_LIBRARIES} m)
             target_compile_definitions(TestWholeAlgorithm PUBLIC LINUX)
         endif(WIN32)  
 
