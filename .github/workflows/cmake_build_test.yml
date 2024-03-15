@@ -6,9 +6,9 @@ name: cmake_testing
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master" ]
+    branches: [ "master", "algorithm_whole_test" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "algorithm_whole_test" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -53,6 +53,12 @@ jobs:
           cmake --build .
           sudo cmake --install .
           
+      - if : ${{ steps.cache-HIGHS.outputs.cache-hit == 'true' }}
+        name : Install solver only
+        continue-on-error : true
+        run : |
+          cd ~/HiGHS/build
+          sudo cmake --install .
 
       # Runs a set of commands using the runners shell
       - name: Build and Test

@@ -187,11 +187,11 @@ void min_reconstruction_function(struct meta_TSP_instance *metaTspInstance)
                         if(partPrev != 0)
                         {
                             original->adjacencies[prevPartNode * partitions->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]] = 0 ;
+                            original->adjacencies[prevPartNode * partitions->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_champion_idx]] = 1 ;
                         }
                         else
                             indexes[partActual * partitions->partitions + partPrev].entranceIndex = entrance_champion_idx ;
                         entrance_node_idx = entrance_champion_idx ;
-                        original->adjacencies[prevPartNode * partitions->nodes + partitions->partitionMap[partActual * partitions->nodes + entrance_node_idx]] = 1 ;
                     }
                     else
                     {

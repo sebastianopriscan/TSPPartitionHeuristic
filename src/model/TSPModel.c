@@ -138,7 +138,11 @@ SEARCH_LOOP :
     i = 0 ;
     while (i < instance->nodes)
     {
-        if (nodeFlags[i] == 0) return 1;
+        if (nodeFlags[i] == 0)
+        {
+            free(nodeFlags) ;
+            return 1;  
+        }
         i++ ;
     }
 
@@ -259,7 +263,8 @@ void destroy_instance(struct TSP_instance *instance)
 
 void destroy_meta_instance(struct meta_TSP_instance *metaTspInstance)
 {
-    destroy_instance(metaTspInstance->start) ;
+    //destroy_instance(metaTspInstance->start) ;
+    free(metaTspInstance->end->costs) ;
     destroy_instance(metaTspInstance->end) ;
     free(metaTspInstance->partitions->metadata) ;
     free(metaTspInstance->partitions) ;

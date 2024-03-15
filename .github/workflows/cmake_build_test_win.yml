@@ -2,9 +2,9 @@ name: cmake_testing_win
 
 on:
   push:
-    branches: [ "master", "more_data_on_meta_instance_creation" ]
+    branches: [ "master", "more_data_on_meta_instance_creation", "algorithm_whole_test" ]
   pull_request:
-    branches: [ "master", "more_data_on_meta_instance_creation" ]
+    branches: [ "master", "more_data_on_meta_instance_creation", "algorithm_whole_test" ]
 
 jobs:
   build:
@@ -13,18 +13,46 @@ jobs:
 
     steps:
     
+    - name : Restore solver cache
+      id : cache-HIGHS
+      uses : actions/cache@v3
+      env :
+        cache-name : cache-HIGHS-installation
+      with :
+        key : ${{ runner.os }}-${{ env.cache-name }}
+        path : ${{ github.workspace }}/HiGHS
+
+    - if : ${{ steps.cache-HIGHS.outputs.cache-hit != 'true' }}
+      uses: actions/checkout@v3
+      with:
+        repository: ERGO-Code/HiGHS
+        path: HiGHS
+
+    - if : ${{ steps.cache-HIGHS.outputs.cache-hit != 'true' }}
+      name: Build solver with cmake
+      working-directory: ${{github.workspace}}/HiGHS
+      run: |
+        cmake.exe -G "Visual Studio 17 2022" -S . -B build
+        cmake.exe --build build --config Release
+
     - uses: actions/checkout@v3
+      with:
+        path: main
 
     - name: Build with cmake
-      uses: lukka/run-cmake@v3
-      with:
-        cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
-        cmakeAppendedArgs: '-D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache'
-        buildWithCMake: true
-        buildDirectory: '${{ github.workspace }}/build'
+      working-directory: ${{github.workspace}}/main
+      run: |
+        cmake.exe -G "Visual Studio 17 2022" -B build -DCMAKE_BUILD_TYPE=Debug -DTEST_SOLVER_USING_TESTS=true -DHIGHS_SOURCE_DIR=${{ github.workspace }}
+        cmake.exe --build build
         
     - name : Test
-      shell : bash
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}/main/build
       run : |
-        ctest
+        ctest.exe
+
+    - name : Save test output
+      if : ${{ always() }}
+      uses : actions/upload-artifact@v4
+      with :
+        name : tests-output
+        path : 'D:/a/TSPPartitionHeuristic/TSPPartitionHeuristic/main/build/Testing/Temporary/LastTest.log'

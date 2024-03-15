@@ -1,10 +1,12 @@
 if(WIN32)
-        find_path(HIGHS_INCLUDE_DIR highs_c_api.h
+        find_path(HIGHS_INCLUDE_DIR Highs.h
                 PATHS
-
+                ${HIGHS_SOURCE_DIR}/HiGHS/src
         )
 
-        find_library(HIGHS_LIBRARIES NAMES libhighs
+        find_library(HIGHS_LIBRARIES NAMES highs
+                PATHS
+                ${HIGHS_SOURCE_DIR}/HiGHS/build/RELEASE/bin
         )
 else(WIN32)
         find_path(HIGHS_INCLUDE_DIR Highs.h
