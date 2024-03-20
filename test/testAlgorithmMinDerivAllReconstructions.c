@@ -5,6 +5,9 @@
 #include "../src/model/model.h"
 #include "solvers/highsSolver.h"
 
+#ifdef SAMPLER_ENABLED
+#include "../src/sampler/sampler.h"
+#endif
 
 int size = 10 ;
 
@@ -31,6 +34,10 @@ int main()
 
     struct TSP_instance *instance = create_instance(size, costs) ;
 
+#ifdef SAMPLER_ENABLED
+    resetState() ;
+#endif
+
     TSP_heuristic_algorithm(instance, min_derivation_function_minRec,
         min_reconstruction_function, highs_solver, 2) ;
 
@@ -39,6 +46,9 @@ int main()
     if(check_instance_is_correct(instance) != 0) result = 1 ;
     if(check_instance_connection(instance) != 0) result = 1 ;
 
+#ifdef SAMPLER_ENABLED
+    printState() ;
+#else
     puts("") ;
     for(int i = 0; i < size; i++) {
         for(int j = 0; j < size; j++) {
@@ -46,7 +56,7 @@ int main()
         }
         puts("") ;
     }
-
+#endif
     if(get_nodes_adjacency(instance, 0, 7) == 0) result = 1 ;
     if(get_nodes_adjacency(instance, 7, 4) == 0) result = 1 ;
     if(get_nodes_adjacency(instance, 4, 1) == 0) result = 1 ;
@@ -62,12 +72,19 @@ int main()
 
     instance = create_instance(size, costs) ;
 
+#ifdef SAMPLER_ENABLED
+    resetState() ;
+#endif
+
     TSP_heuristic_algorithm(instance, min_derivation_function_saving,
         saving_reconstruction_function, highs_solver, 2) ;
 
     if(check_instance_is_correct(instance) != 0) result = 1 ;
     if(check_instance_connection(instance) != 0) result = 1 ;
 
+#ifdef SAMPLER_ENABLED
+    printState() ;
+#else
     puts("") ;
     for(int i = 0; i < size; i++) {
         for(int j = 0; j < size; j++) {
@@ -75,6 +92,7 @@ int main()
         }
         puts("") ;
     }
+#endif
 
     if(get_nodes_adjacency(instance, 0, 5) == 0) result = 1 ;
     if(get_nodes_adjacency(instance, 5, 9) == 0) result = 1 ;
@@ -88,5 +106,8 @@ int main()
     if(get_nodes_adjacency(instance, 3, 0) == 0) result = 1 ;
 
     destroy_instance(instance) ;
+#ifdef SAMPLER_ENABLED
+    resetState() ;
+#endif
     return result ;
 }

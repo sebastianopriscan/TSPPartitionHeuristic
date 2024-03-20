@@ -13,11 +13,23 @@ endif(WIN32)
 
 add_subdirectory(test)
 
+
+add_library(TSPPartitionHeuristicSampled STATIC
+        src/model/distanceGenFunctions.c
+        src/model/reconstructionFunctions.c
+        src/model/TSPHeuAlgo.c
+        src/model/TSPModel.c
+        src/sampler/sampler.c
+    )
+
+target_compile_definitions(TSPPartitionHeuristicSampled PRIVATE -DSAMPLER_ENABLED)    
+
+
 add_library(TSPPartitionHeuristic STATIC
         src/model/distanceGenFunctions.c
         src/model/reconstructionFunctions.c
         src/model/TSPHeuAlgo.c
         src/model/TSPModel.c
-        )
+    )
 
 enable_testing()

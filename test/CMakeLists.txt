@@ -102,16 +102,36 @@ if (BUILD_TESTING)
 
         add_test(TestAlgorithmMinDerivAllReconstructions TestAlgorithmMinDerivAllReconstructions)
 
+        add_executable(TestWholeAlgorithmSampled testWholeAlgorithm.c solvers/highsSolver.c)
+
+        target_include_directories(TestWholeAlgorithmSampled PRIVATE ${HIGHS_INCLUDE_DIR})
+
+        add_test(TestWholeAlgorithmSampled TestWholeAlgorithmSampled)
+
+        add_executable(TestAlgorithmMinDerivAllReconstructionsSampled testAlgorithmMinDerivAllReconstructions.c solvers/highsSolver.c)
+
+        target_include_directories(TestAlgorithmMinDerivAllReconstructionsSampled PRIVATE ${HIGHS_INCLUDE_DIR})
+
+        add_test(TestAlgorithmMinDerivAllReconstructionsSampled TestAlgorithmMinDerivAllReconstructionsSampled)
+
         if(WIN32)
             target_link_libraries(TestSolver ${HIGHS_LIBRARIES})
             target_link_libraries(TestWholeAlgorithm TSPPartitionHeuristic ${HIGHS_LIBRARIES})
             target_link_libraries(TestAlgorithmMinDerivAllReconstructions TSPPartitionHeuristic ${HIGHS_LIBRARIES})
+            target_link_libraries(TestWholeAlgorithmSampled TSPPartitionHeuristicSampled ${HIGHS_LIBRARIES})
+            target_link_libraries(TestAlgorithmMinDerivAllReconstructionsSampled TSPPartitionHeuristicSampled ${HIGHS_LIBRARIES})
             target_compile_definitions(TestWholeAlgorithm PUBLIC WIN32)
+            target_compile_definitions(TestWholeAlgorithmSampled PUBLIC WIN32 SAMPLER_ENABLED)
+            target_compile_definitions(TestAlgorithmMinDerivAllReconstructionsSampled PUBLIC SAMPLER_ENABLED)
         else(WIN32)
             target_link_libraries(TestSolver ${HIGHS_LIBRARIES} m)
             target_link_libraries(TestWholeAlgorithm TSPPartitionHeuristic ${HIGHS_LIBRARIES} m)
             target_link_libraries(TestAlgorithmMinDerivAllReconstructions TSPPartitionHeuristic ${HIGHS_LIBRARIES} m)
+            target_link_libraries(TestWholeAlgorithmSampled TSPPartitionHeuristicSampled ${HIGHS_LIBRARIES} m)
+            target_link_libraries(TestAlgorithmMinDerivAllReconstructionsSampled TSPPartitionHeuristicSampled ${HIGHS_LIBRARIES} m)
             target_compile_definitions(TestWholeAlgorithm PUBLIC LINUX)
+            target_compile_definitions(TestWholeAlgorithmSampled PUBLIC LINUX SAMPLER_ENABLED)
+            target_compile_definitions(TestAlgorithmMinDerivAllReconstructionsSampled PUBLIC SAMPLER_ENABLED)
         endif(WIN32)  
 
     endif ()

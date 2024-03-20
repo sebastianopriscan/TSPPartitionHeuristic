@@ -11,6 +11,10 @@
 #include "../src/model/model.h"
 #include "solvers/highsSolver.h"
 
+#ifdef SAMPLER_ENABLED
+#include "../src/sampler/sampler.h"
+#endif
+
 #ifdef LINUX
 DIR *directory ;
 struct dirent *directory_struct ;
@@ -155,13 +159,18 @@ int main(void)
                 {
                     struct TSP_instance *instance = create_instance(instanceSize, costMatrix) ;
 
+#ifdef SAMPLER_ENABLED
+                    resetState() ;
+#endif
                     TSP_heuristic_algorithm(instance, derivation_functions[j][q], reconstruction_functions[j], highs_solver, 2) ;
                     if(check_instance_is_correct(instance) != 0 || check_instance_connection(instance) != 0)
                     {
                         printf("Instance %d of file %s is not correct with policy combo %d,%d\n", i, nameBuffer, j, q) ;
                         failure = 1 ;
                     }
-
+#ifdef SAMPLER_ENABLED
+                    printState() ;
+#endif
                     destroy_instance(instance) ;
                 }
 
@@ -172,6 +181,10 @@ int main(void)
 #endif
 #ifdef WIN32
     } while(FindNextFile(hFind, &fdFile)) ;
+#endif
+
+#ifdef SAMPLER_ENABLED
+    resetState() ;
 #endif
 
     return failure ;
